@@ -39,11 +39,11 @@ driver.get(url_login)
 # Llenar los campos de usuario y contraseña
 username_field = driver.find_element(By.NAME, "username")
 username_field.clear()
-username_field.send_keys('MXE00043803A')
+username_field.send_keys
 
 password_field = driver.find_element(By.NAME, "password")
 password_field.clear()
-password_field.send_keys('7198y1F.V985')
+password_field.send_keys
 
 # Click en el botón "Ingresar"
 driver.find_element(By.NAME, 'Ingresar').click()
