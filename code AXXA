@@ -1,0 +1,574 @@
+
+#pip install selenium
+#pip install --upgrade selenium
+
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import Select
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.keys import Keys
+
+from selenium.webdriver.common.action_chains import ActionChains
+import time
+
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import Select
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.keys import Keys
+
+from selenium.webdriver.common.action_chains import ActionChains
+import time
+
+# Configurar el WebDriver
+options = webdriver.ChromeOptions()
+options.add_argument('--start-maximized')  # Maximizar la ventana del navegador al iniciar
+driver = webdriver.Chrome(options=options)
+
+# URL del portal de Internet donde quieres iniciar sesión
+url_login = 'https://distribuidores.axa.com.mx/siteminderagent/forms/axa/dist/login_Liferay.fcc?TYPE=33554433&REALMOID=06-0002f8e0-2e73-18fc-8f31-4c290a4da0de&GUID=&SMAUTHREASON=0&METHOD=GET&SMAGENTNAME=-SM-3U1CWok4%2bTwKsVKztfYx87bmpkdqD6KQfY%2fLwI0HW403xOS8lpm8pBKfZ6KYZB4J&TARGET=-SM-http%3a%2f%2fdistribuidores%2eaxa%2ecom%2emx%2fgroup%2fdistribucion'
+url_emision = 'https://portal.axa.com.mx/MotorDanosCotizadorEmisor/index.jsf?worksite=EhYQE8M%3D&rvn=1'
+
+# Navegar a la página de inicio de sesión
+driver.get(url_login)
+
+# Llenar los campos de usuario y contraseña
+username_field = driver.find_element(By.NAME, "username")
+username_field.clear()
+username_field.send_keys('MXE00043803A')
+
+password_field = driver.find_element(By.NAME, "password")
+password_field.clear()
+password_field.send_keys('7198y1F.V985')
+
+# Click en el botón "Ingresar"
+driver.find_element(By.NAME, 'Ingresar').click()
+
+# Cambiar a la nueva ventana
+# Navegar a la página de emisión
+driver.get(url_emision)
+
+driver.get(url_emision)
+
+def AXA_FUNCION_1(piso_niveles, id_negocio, cp_d):
+
+
+    #DESCRIPCION Y/O ACTIVIDAD
+    #SELECCION DUMMY PARA ACTIVAR LA CORRECTA ACTUALIZACION EN CASCADA
+    campo_menu = driver.find_element(By.NAME, 'frmUbicacion:cmbDescripcion')
+    select_menu = Select(campo_menu)
+    select_menu.select_by_index(2)  # Esto selecciona la tercera opción en el menú desplegable
+
+
+    time.sleep(4)
+
+    #SELECCION CORRECTA DE LA OPCION
+    select = Select(driver.find_element(By.NAME, 'frmUbicacion:cmbDescripcion'))
+    select.select_by_value(id_negocio)
+
+    time.sleep(2)
+
+    #MUROS
+    campo_muros = driver.find_element(By.NAME, 'frmUbicacion:cmbMuros')
+    driver.execute_script("arguments[0].value = '4';", campo_muros) #4
+    driver.execute_script("document.getElementsByName('frmUbicacion:cmbMuros')[0].dispatchEvent(new KeyboardEvent('keypress', {'key': 'Enter'}));")
+
+    time.sleep(2)
+    
+    #TECHOS
+    campo_techos = driver.find_element(By.NAME, 'frmUbicacion:cmbTechos')
+    driver.execute_script("arguments[0].value = '15';", campo_techos) #15
+    driver.execute_script("document.getElementsByName('frmUbicacion:cmbTechos')[0].dispatchEvent(new KeyboardEvent('keypress', {'key': 'Enter'}));")
+
+    time.sleep(3)
+
+    #niveles
+    campo_niveles = driver.find_element(By.NAME, 'frmUbicacion:txtNiveles_num')
+    driver.execute_script("arguments[0].value = arguments[1];", campo_niveles, piso_niveles)
+
+    #sotanos
+    campo_sotano = driver.find_element(By.NAME, 'frmUbicacion:txtSotanos_num')
+    driver.execute_script("arguments[0].value = '0';", campo_sotano)
+    driver.execute_script("document.getElementsByName('frmUbicacion:txtSotanos_num')[0].dispatchEvent(new KeyboardEvent('keypress', {'key': 'Enter'}));")
+
+    #Anio de construccion
+    campo_anio_con = driver.find_element(By.NAME, 'frmUbicacion:txtAnioDeConstrucccion_num')
+    driver.execute_script("arguments[0].value = '2014';", campo_anio_con)
+    driver.execute_script("document.getElementsByName('frmUbicacion:txtAnioDeConstrucccion_num')[0].dispatchEvent(new KeyboardEvent('keypress', {'key': 'Enter'}));")
+
+    time.sleep(2)
+
+    #cp
+    campo_cp = driver.find_element(By.NAME, 'frmUbicacion:txtCP_num')
+    driver.execute_script("arguments[0].value = arguments[1];", campo_cp, cp_d)
+    driver.execute_script("document.getElementsByName('frmUbicacion:txtCP_num')[0].dispatchEvent(new KeyboardEvent('keypress', {'key': 'TAB'}));")
+    campo_cp.send_keys(Keys.TAB)
+
+
+    time.sleep(3)
+
+    #PRIMERA LINEA
+    driver.find_element(By.ID,"frmUbicacion:rdbPrimera:_2").click()
+
+    time.sleep(1)
+
+    #INMUEBLE
+    campo_inmueble = driver.find_element(By.NAME, "frmUbicacion:txt_1_Inmueble_mon")
+    driver.execute_script("arguments[0].value = '$3,000,000.00';", campo_inmueble)
+    driver.execute_script("document.getElementsByName('frmUbicacion:txt_1_Inmueble_mon')[0].dispatchEvent(new KeyboardEvent('keypress', {'key': 'Enter'}));")
+
+    time.sleep(1)
+    
+    #MERCANCIAS
+    campo_mercancias = driver.find_element(By.NAME, "frmUbicacion:txt_1_Mercancias_mon")
+    driver.execute_script("arguments[0].value = '$1,035,000.00';", campo_mercancias)
+    driver.execute_script("document.getElementsByName('frmUbicacion:txt_1_Mercancias_mon')[0].dispatchEvent(new KeyboardEvent('keypress', {'key': 'Enter'}));")
+
+    time.sleep(1)
+    
+    #EQUIPO ELECTRONICO FIJO
+    campo_equipo_fijo = driver.find_element(By.NAME, "frmUbicacion:txt_1_EquipoEleFij_mon")
+    driver.execute_script("arguments[0].value = '$150,000.00';", campo_equipo_fijo)
+    driver.execute_script("document.getElementsByName('frmUbicacion:txt_1_EquipoEleFij_mon')[0].dispatchEvent(new KeyboardEvent('keypress', {'key': 'Enter'}));")
+
+    time.sleep(1)
+
+    #EQUIPO ELECTRONICO PORTATIL
+    campo_equipo_portatil = driver.find_element(By.NAME, "frmUbicacion:txt_1_EquipoElePor_mon")
+    driver.execute_script("arguments[0].value = '$15,000.00';", campo_equipo_portatil)
+    driver.execute_script("document.getElementsByName('frmUbicacion:txt_1_EquipoElePor_mon')[0].dispatchEvent(new KeyboardEvent('keypress', {'key': 'Enter'}));")
+
+    time.sleep(1)    
+    
+    #nMAQUINARIA
+    campo_maquinaria = driver.find_element(By.NAME, "frmUbicacion:txt_1_Maquinaria_mon")
+    driver.execute_script("arguments[0].value = '$150,000.00';", campo_maquinaria)
+    driver.execute_script("document.getElementsByName('frmUbicacion:txt_1_Maquinaria_mon')[0].dispatchEvent(new KeyboardEvent('keypress', {'key': 'Enter'}));")
+
+    #CALDERAS
+    campo_calderas = driver.find_element(By.NAME, "frmUbicacion:txt_1_Calderas_mon")
+    driver.execute_script("arguments[0].value = '$150,000.00';", campo_calderas)
+    driver.execute_script("document.getElementsByName('frmUbicacion:txt_1_Calderas_mon')[0].dispatchEvent(new KeyboardEvent('keypress', {'key': 'Enter'}));")
+
+
+    time.sleep(4)
+
+    cuadro_texto_1 = driver.find_element(By.NAME,'frmUbicacion:txt_1_Mercancias_mon')
+    cuadro_texto_1.click()
+    
+    time.sleep(2)
+
+    # Enviar la tecla "Enter"
+    cuadro_texto_1.send_keys(Keys.ENTER)
+
+
+    time.sleep(5)
+
+    WebDriverWait(driver, 15).until(EC.presence_of_element_located((By.NAME, 'frmUbicacion:btnCotizarPropuesta'))).click()
+    #driver.execute_script("return document.querySelector('[name=\"frmUbicacion:btnCotizarPropuesta\"]').click();")
+    
+    time.sleep(5)
+    
+
+    WebDriverWait(driver, 15).until(EC.presence_of_element_located((By.ID, 'frmUbicacion:otxtDanosMateriales'))).click()
+    #driver.execute_script("return document.querySelector('[name=\"frmUbicacion:otxtDanosMateriales\"]').click();")
+    time.sleep(6)
+
+    #CRISTALES
+
+    campo_cristales = driver.find_element(By.NAME, "frmUbicacion:txt_1_Cristales_mon")
+    driver.execute_script("arguments[0].value = '$225,000.00';", campo_cristales) #$50,000.00
+    
+    time.sleep(2)
+    
+    driver.execute_script("document.getElementsByName('frmUbicacion:txt_1_Cristales_mon')[0].dispatchEvent(new KeyboardEvent('keypress', {'key': 'Enter'}));")
+
+    time.sleep(2)
+
+    driver.find_element(By.ID,"frmUbicacion:chk_1_PCIExt").click()
+
+
+    time.sleep(2)
+    '''
+    #BASICO-------------
+    driver.find_element(By.ID,"frmNavegadorHeader:_id133").click()
+    time.sleep(2)
+    #BASICO-------------
+    '''
+    #REMOCION DE ESCOMBROS
+
+    if id_negocio == '462210':
+        print("NO APLICA")
+    elif id_negocio == '461110':
+        print("NO APLICA")
+    elif id_negocio == '467111':
+        print("NO APLICA")
+
+    else:
+        driver.find_element(By.ID,"frmUbicacion:chk_2_GastosPerdidasAdicionales").click()
+
+    time.sleep(2)
+
+    #REMOCION DE ESCOMBROS
+    WebDriverWait(driver, 15).until(EC.presence_of_element_located((By.ID, 'frmUbicacion:otxtGastosPerdidasAdic'))
+    ).click()
+    campo_remescombros = driver.find_element(By.NAME, "frmUbicacion:txt_2_RemocionEscombros_mon")
+    driver.execute_script("arguments[0].value = '$450,000.00';", campo_remescombros)
+    driver.execute_script("document.getElementsByName('frmUbicacion:txt_2_RemocionEscombros_mon')[0].dispatchEvent(new KeyboardEvent('keypress', {'key': 'Enter'}));")
+
+    time.sleep(2)
+    
+    campo_gasextr = driver.find_element(By.NAME, "frmUbicacion:txt_2_GastosExtraordinarios_mon")
+    driver.execute_script("arguments[0].value = '$450,000.00';", campo_gasextr)
+    driver.execute_script("document.getElementsByName('frmUbicacion:txt_2_GastosExtraordinarios_mon')[0].dispatchEvent(new KeyboardEvent('keypress', {'key': 'Enter'}));")
+
+    time.sleep(2)
+
+    #BASICO-------------
+    '''
+    cuadro_texto_2 = driver.find_element(By.NAME,'frmUbicacion:txt_2_GastosExtraordinarios_mon')
+    cuadro_texto_2.click()
+
+    # Enviar la tecla "Enter"
+    cuadro_texto_2.send_keys(Keys.ENTER)
+
+    time.sleep(2)
+
+    driver.find_element(By.ID,"frmUbicacion:chk_3_RoboBienes").click()
+    #BASICO---------------------
+    '''
+    #AMPLIO---------------------
+    campo_gasfij = driver.find_element(By.NAME, 'frmUbicacion:cmb_2_Meses')
+    driver.execute_script("arguments[0].value = '12';", campo_gasfij)
+    driver.execute_script("document.getElementsByName('frmUbicacion:cmb_2_Meses')[0].dispatchEvent(new KeyboardEvent('keypress', {'key': 'Enter'}));")
+
+    time.sleep(2)
+
+    cuadro_texto_3 = driver.find_element(By.NAME,'frmUbicacion:txt_2_GastosExtraordinarios_mon')
+    cuadro_texto_3.click()
+
+    time.sleep(2)
+    
+    # Enviar la tecla "Enter"
+    cuadro_texto_3.send_keys(Keys.ENTER)
+
+    time.sleep(3)
+
+    campo_gasfij_mon = driver.find_element(By.NAME, "frmUbicacion:txt_2_PerdidaUtilidadesSalariosGastosFijos_mon")
+    driver.execute_script("arguments[0].value = '$450,000.00';", campo_gasfij_mon)
+    driver.execute_script("document.getElementsByName('frmUbicacion:txt_2_PerdidaUtilidadesSalariosGastosFijos_mon')[0].dispatchEvent(new KeyboardEvent('keypress', {'key': 'Enter'}));")
+
+
+    #AMPLIO---------------------
+
+    time.sleep(2)
+
+    #ROBO DE BIENES
+    
+    WebDriverWait(driver, 15).until(EC.presence_of_element_located((By.ID, 'frmUbicacion:otxtRoboBienes'))).click()
+    
+    time.sleep(2)
+
+    campo_rbcon = driver.find_element(By.NAME, "frmUbicacion:txt_3_Contenidos_mon")
+    driver.execute_script("arguments[0].value = '$150,000.00';", campo_rbcon)
+    driver.execute_script("document.getElementsByName('frmUbicacion:txt_3_Contenidos_mon')[0].dispatchEvent(new KeyboardEvent('keypress', {'key': 'Enter'}));")
+
+    time.sleep(2)
+    
+    driver.find_element(By.ID,"frmUbicacion:chk_3_EquipoElectronicoPortatilFuera").click()
+    
+    time.sleep(1)
+
+    #AMPLIO---------------------
+ 
+    campo_dyv = driver.find_element(By.NAME, "frmUbicacion:txt_3_DineroValores_mon")
+    driver.execute_script("arguments[0].value = '$75,000.00';", campo_dyv)
+    driver.execute_script("document.getElementsByName('frmUbicacion:txt_3_DineroValores_mon')[0].dispatchEvent(new KeyboardEvent('keypress', {'key': 'Enter'}));")
+
+    time.sleep(1)    
+    
+
+    #AMPLIO---------------------    
+    
+    #ROBO DE BIENES
+
+    cuadro_texto_2 = driver.find_element(By.NAME,'frmUbicacion:txt_3_Contenidos_mon')
+    cuadro_texto_2.click()
+
+    time.sleep(2)
+    
+    # Enviar la tecla "Enter"
+    cuadro_texto_2.send_keys(Keys.ENTER)
+
+    time.sleep(3)
+
+    #ROBO DE BIENES  CUADRO EMERGENTE
+    driver.find_element(By.ID,"frmUbicacion:chk_3_MedidasSeguridad").click()
+
+    time.sleep(5)
+
+    #ROBO DE BIENES
+    driver.find_element(By.ID,"subView_detalle:frmDetalleRobBie:rdbDetalleRobBie_04:_1").click()
+
+    time.sleep(2)
+
+    #ROBO DE BIENES
+    driver.find_element(By.ID,"subView_detalle:frmDetalleRobBie:rdbDetalleRobBie_05:_1").click()
+
+    time.sleep(3)
+
+    WebDriverWait(driver, 15).until(EC.presence_of_element_located((By.ID, 'subView_detalle:frmDetalleRobBie:btnAceptarDetalle'))).click()
+    
+
+    time.sleep(3)
+
+    #RC
+    if id_negocio == '462210':
+        print("NO APLICA")
+    elif id_negocio == '461110':
+        print("NO APLICA")
+    elif id_negocio == '467111':
+        print("NO APLICA")
+    elif id_negocio == '531111':
+        print("NO APLICA")
+    elif id_negocio == '621111':
+        print("NO APLICA")
+    elif id_negocio == '561110':
+        print("NO APLICA")
+    elif id_negocio == '722110':
+        print("NO APLICA")
+    else:
+        driver.find_element(By.ID,"frmUbicacion:chk_4_ResponsabilidadCiv").click()
+
+    time.sleep(3)
+
+    WebDriverWait(driver, 15).until(EC.presence_of_element_located((By.ID, 'frmUbicacion:otxtResponsabilidadCivil'))
+    ).click()
+    
+    campo_rc = driver.find_element(By.NAME, "frmUbicacion:txt_4_ResponsabilidadCiv_mon")
+    driver.execute_script("arguments[0].value = '$450,000.00';", campo_rc)
+    driver.execute_script("document.getElementsByName('frmUbicacion:txt_4_ResponsabilidadCiv_mon')[0].dispatchEvent(new KeyboardEvent('keypress', {'key': 'Enter'}));")
+    
+    time.sleep(2)
+
+    if id_negocio == '611111':
+        campo_minimorc = driver.find_element(By.NAME, "frmUbicacion:txt_4_SublimitePer_mon")
+        driver.execute_script("arguments[0].value = '$10,000.00';", campo_minimorc)
+        driver.execute_script("document.getElementsByName('frmUbicacion:txt_4_SublimitePer_mon')[0].dispatchEvent(new KeyboardEvent('keypress', {'key': 'Enter'}));")
+
+    elif id_negocio == '462210':
+        driver.find_element(By.ID,"frmUbicacion:chk_4_ProductosTraTer").click()
+
+    elif id_negocio == '461110':
+        driver.find_element(By.ID,"frmUbicacion:chk_4_ProductosTraTer").click()
+
+    elif id_negocio == '467111':
+        driver.find_element(By.ID,"frmUbicacion:chk_4_ProductosTraTer").click()
+
+    elif id_negocio == '531111':
+        driver.find_element(By.ID,"frmUbicacion:chk_4_ProductosTraTer").click()
+
+    elif id_negocio == '561110':
+        driver.find_element(By.ID,"frmUbicacion:chk_4_ProductosTraTer").click()
+
+    else:
+        print("NO APLICA")
+   
+    time.sleep(3)
+
+    cuadro_texto_3 = driver.find_element(By.NAME,'frmUbicacion:txt_4_ResponsabilidadCiv_mon')
+    cuadro_texto_3.click()
+    
+    time.sleep(2)
+
+    # Enviar la tecla "Enter"
+    cuadro_texto_3.send_keys(Keys.TAB)
+
+    time.sleep(3)
+
+    if id_negocio == '611111':
+        campo_alumnos = driver.find_element(By.NAME, "frmUbicacion:txt_4_Otro_num")
+        driver.execute_script("arguments[0].value = '100';", campo_alumnos)
+        driver.execute_script("document.getElementsByName('frmUbicacion:txt_4_Otro_num')[0].dispatchEvent(new KeyboardEvent('keypress', {'key': 'Enter'}));")
+
+        campo_alumnostex = driver.find_element(By.NAME, "frmUbicacion:txt_4_OtroDes")
+        driver.execute_script("arguments[0].value = 'A';", campo_alumnostex)
+        driver.execute_script("document.getElementsByName('frmUbicacion:txt_4_OtroDes')[0].dispatchEvent(new KeyboardEvent('keypress', {'key': 'Enter'}));")
+
+    elif id_negocio == '811111':
+        campo_mocajones = driver.find_element(By.NAME, "frmUbicacion:txt_4_SublimiteVeh_mon")
+        driver.execute_script("arguments[0].value = '$10,000.00';", campo_mocajones)
+        driver.execute_script("document.getElementsByName('frmUbicacion:txt_4_SublimiteVeh_mon')[0].dispatchEvent(new KeyboardEvent('keypress', {'key': 'Enter'}));")
+
+        campo_nocajones = driver.find_element(By.NAME, "frmUbicacion:txt_4_NoCaj_num")
+        driver.execute_script("arguments[0].value = '10';", campo_nocajones)
+        driver.execute_script("document.getElementsByName('frmUbicacion:txt_4_NoCaj_num')[0].dispatchEvent(new KeyboardEvent('keypress', {'key': 'Enter'}));")
+
+    elif id_negocio == '721111':
+        campo_numcuartos = driver.find_element(By.NAME, "frmUbicacion:txt_4_NoCua_num")
+        driver.execute_script("arguments[0].value = '10';", campo_numcuartos)
+        driver.execute_script("document.getElementsByName('frmUbicacion:txt_4_NoCua_num')[0].dispatchEvent(new KeyboardEvent('keypress', {'key': 'Enter'}));")
+
+
+    else:
+        print("NO APLICA")
+
+    time.sleep(2)
+
+    if id_negocio == '611111':
+        cuadro_texto_4 = driver.find_element(By.NAME,'frmUbicacion:txt_4_OtroDes')
+        cuadro_texto_4.click()
+    # Enviar la tecla "Enter"
+        cuadro_texto_4.send_keys(Keys.TAB)
+
+    elif id_negocio == '811111':
+        cuadro_texto_5 = driver.find_element(By.NAME, "frmUbicacion:txt_4_NoCaj_num")
+        cuadro_texto_5.click()
+        # Enviar la tecla "Enter"
+        cuadro_texto_5.send_keys(Keys.TAB)
+
+    elif id_negocio == '721111':
+        cuadro_texto_6 = driver.find_element(By.NAME, "frmUbicacion:txt_4_NoCua_num")
+        cuadro_texto_6.click()
+        # Enviar la tecla "Enter"
+        cuadro_texto_6.send_keys(Keys.TAB)
+    else:
+        print("NO APLICA")
+
+
+    time.sleep(3)
+
+    #ESTACIONAMIENTOS
+    #driver.find_element(By.ID,"frmUbicacion:chk_4_EstacionamientoRieAcc").click()
+    
+    time.sleep(2)
+    
+    campo_cajones_mon = driver.find_element(By.NAME, "frmUbicacion:txt_4_SublimiteVeh_mon")
+    driver.execute_script("arguments[0].value = '$100,000.00';", campo_cajones_mon)
+    driver.execute_script("document.getElementsByName('frmUbicacion:txt_4_SublimiteVeh_mon')[0].dispatchEvent(new KeyboardEvent('keypress', {'key': 'Enter'}));")
+    
+    time.sleep(2)
+    
+    campo_cajones_nu = driver.find_element(By.NAME, "frmUbicacion:txt_4_NoCaj_num")
+    driver.execute_script("arguments[0].value = '5';", campo_cajones_nu )
+    driver.execute_script("document.getElementsByName('frmUbicacion:txt_4_NoCaj_num')[0].dispatchEvent(new KeyboardEvent('keypress', {'key': 'Enter'}));")
+
+    time.sleep(2)
+        
+    #driver.find_element(By.ID,"frmUbicacion:rdb_4_Acomodador:_1").click()
+    #time.sleep(2)    
+    #driver.find_element(By.ID,"frmUbicacion:chk_4_Cruzada").click()
+    #time.sleep(2)    
+    #driver.find_element(By.ID,"frmUbicacion:chk_4_ContractualAsu").click()
+    #time.sleep(2)  
+    
+    WebDriverWait(driver, 15).until(EC.presence_of_element_located((By.ID, 'frmUbicacion:btnCalcular'))
+    ).click()
+
+    time.sleep(3)
+
+
+
+    campo_nacionalidad = driver.find_element(By.NAME, "frmUbicacion:cmb_DatAd_Nacionalidad")
+    driver.execute_script("arguments[0].value = '1';", campo_nacionalidad)
+    driver.execute_script("document.getElementsByName('frmUbicacion:cmb_DatAd_Nacionalidad')[0].dispatchEvent(new KeyboardEvent('keypress', {'key': 'Enter'}));")
+
+    #DIRECCION
+    #NOMBRE
+    campo_nombre = driver.find_element(By.NAME, "frmUbicacion:txt_DatAd_Nombre")
+    driver.execute_script("arguments[0].value = 'Pedro';", campo_nombre)
+    driver.execute_script("document.getElementsByName('frmUbicacion:txt_DatAd_Nombre')[0].dispatchEvent(new KeyboardEvent('keypress', {'key': 'Enter'}));")
+
+    campo_apellido = driver.find_element(By.NAME, "frmUbicacion:txt_DatAd_ApellidoPaterno")
+    driver.execute_script("arguments[0].value = 'Dominguez';", campo_apellido)
+    driver.execute_script("document.getElementsByName('frmUbicacion:txt_DatAd_ApellidoPaterno')[0].dispatchEvent(new KeyboardEvent('keypress', {'key': 'Enter'}));")
+
+    campo_rfc = driver.find_element(By.NAME, "frmUbicacion:txt_DatAd_RFC")
+    driver.execute_script("arguments[0].value = 'DOGP990325A75';", campo_rfc)
+    driver.execute_script("document.getElementsByName('frmUbicacion:txt_DatAd_RFC')[0].dispatchEvent(new KeyboardEvent('keypress', {'key': 'Enter'}));")
+
+    campo_calle = driver.find_element(By.NAME, "frmUbicacion:txt_DatAd_Calle")
+    driver.execute_script("arguments[0].value = 'Independencia';", campo_calle)
+    driver.execute_script("document.getElementsByName('frmUbicacion:txt_DatAd_Calle')[0].dispatchEvent(new KeyboardEvent('keypress', {'key': 'Enter'}));")
+
+    campo_noext = driver.find_element(By.NAME, "frmUbicacion:txt_DatAd_NoExt")
+    driver.execute_script("arguments[0].value = '16';", campo_noext)
+    driver.execute_script("document.getElementsByName('frmUbicacion:txt_DatAd_NoExt')[0].dispatchEvent(new KeyboardEvent('keypress', {'key': 'Enter'}));")
+
+    campo_empleados = driver.find_element(By.NAME, "frmUbicacion:txt_DatAd_NoEmpleados")
+    driver.execute_script("arguments[0].value = '15';", campo_empleados)
+    driver.execute_script("document.getElementsByName('frmUbicacion:txt_DatAd_NoEmpleados')[0].dispatchEvent(new KeyboardEvent('keypress', {'key': 'Enter'}));")
+
+
+    time.sleep(2)
+
+    WebDriverWait(driver, 15).until(EC.presence_of_element_located((By.NAME, 'frmUbicacion:btnDatosPoliza'))
+    ).click()
+
+    time.sleep(5)
+
+    WebDriverWait(driver, 15).until(EC.presence_of_element_located((By.NAME, 'frmDatosPoliza:btnGuardarCotizacion'))
+    ).click()
+
+    time.sleep(2)
+
+    WebDriverWait(driver, 15).until(EC.presence_of_element_located((By.NAME, 'frmNavegadorHeader:_id14'))
+    ).click()
+
+    time.sleep(7)
+
+    #IMPRIMIR
+    WebDriverWait(driver, 15).until(EC.presence_of_element_located((By.NAME, 'frmDatosPoliza:btnImprimir'))
+    ).click()
+
+    time.sleep(15)
+
+    WebDriverWait(driver, 15).until(EC.presence_of_element_located((By.NAME, 'frmNavegadorHeader:lnkImpresionUrlCot'))
+    ).click()
+
+    time.sleep(3)
+
+    WebDriverWait(driver, 15).until(EC.presence_of_element_located((By.NAME, 'frmNavegadorHeader:_id7'))
+    ).click()
+
+    time.sleep(3)
+
+    WebDriverWait(driver, 15).until(EC.presence_of_element_located((By.ID, 'frmAcciones:olnkMenu_nuevo'))
+    ).click()
+
+    time.sleep(2)
+
+    WebDriverWait(driver, 15).until(EC.presence_of_element_located((By.ID, 'frmCotizacionGenerales:dtaUbicaciones:0:lnkEditar'))
+    ).click()
+    
+    time.sleep(2)
+    
+    WebDriverWait(driver, 15).until(EC.presence_of_element_located((By.ID, 'frmAcciones:olnkMenu_nuevo'))
+    ).click()
+
+    time.sleep(2)
+    
+    WebDriverWait(driver, 15).until(EC.presence_of_element_located((By.ID, 'frmCotizacionGenerales:dtaUbicaciones:0:lnkEditar'))
+    ).click()
+
+
+piso_niv1='10'
+
+id_neg1='611111'
+id_neg2='461110'
+id_neg3='467111'
+id_neg4='531111'
+id_neg5='621111'
+id_neg6='561110'
+id_neg7='721111'
+id_neg8='722110'
+id_neg9='811111'
+id_neg10='462210'
+
+AXA_FUNCION_1(piso_niv1, id_neg1,'83000')
+time.sleep(3)
+
